@@ -20,7 +20,7 @@ const styles = {
 
 interface Props extends WithStylesProps<typeof styles> {
   step: Step
-  form: { [name: string]: string | number }
+  form: { [name: string]: string }
   isFirst: boolean
   isLast: boolean
   onClickNext(): void
@@ -45,9 +45,13 @@ const StepForm: FC<Props> = ({
   const isDisabled = (): boolean => {
     let isDisabled: boolean = false
     fields.forEach((field) => {
-      console.log('form', form[field.field])
-      if (form[field.field] === undefined) {
+      const value: string = form[field.field]
+      if (value === undefined) {
         isDisabled = true
+      }
+      if (field.type === 'email') {
+        const pattern: RegExp = /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/i
+        isDisabled = !pattern.test(value)
       }
     })
 
@@ -59,6 +63,7 @@ const StepForm: FC<Props> = ({
       <div className={classes.fieldsContainer}>
         {fields.map((field) => (
           <FormInput
+            key={field.field}
             type={field.type}
             label={field.label}
             name={field.field}

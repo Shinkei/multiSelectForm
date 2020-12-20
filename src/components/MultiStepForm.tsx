@@ -48,7 +48,6 @@ const MultiStepForm: FC<Props> = ({ classes, steps }) => {
   }
 
   const updateField = (field: string, value: string) => {
-    console.log(field, value)
     const newForm: { [name: string]: string } = { ...form }
     newForm[field] = value
     setForm(newForm)
@@ -59,18 +58,20 @@ const MultiStepForm: FC<Props> = ({ classes, steps }) => {
       {showResult ? (
         <FormConfirmation form={form} reset={reset} />
       ) : (
-        <StepForm
-          step={steps[currentStep - 1]}
-          form={form}
-          isFirst={currentStep === 1}
-          isLast={currentStep === steps.length}
-          onUpdateField={updateField}
-          onClickNext={goNext}
-          onClickBack={goBack}
-          onClickSubmit={submit}
-        />
+        <>
+          <StepForm
+            step={steps[currentStep - 1]}
+            form={form}
+            isFirst={currentStep === 1}
+            isLast={currentStep === steps.length}
+            onUpdateField={updateField}
+            onClickNext={goNext}
+            onClickBack={goBack}
+            onClickSubmit={submit}
+          />
+          <ProgressBar currentStep={currentStep} numberSteps={steps.length} />
+        </>
       )}
-      <ProgressBar currentStep={currentStep} numberSteps={steps.length} />
     </section>
   )
 }

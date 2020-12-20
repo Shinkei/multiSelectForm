@@ -1,4 +1,4 @@
-import React, { FC, ReactElement } from 'react'
+import React, { FC, ReactElement, FormEvent } from 'react'
 import withStyles, { WithStylesProps } from 'react-jss'
 
 const styles = {
@@ -41,10 +41,12 @@ interface Props extends WithStylesProps<typeof styles> {
   onChange(field: string, value: string): void
   options?: { label: string; value: string | number }[] | undefined
   disabled?: boolean
+  key?: string
 }
 
 const FormInput: FC<Props> = ({
   classes,
+  key,
   type,
   label,
   name,
@@ -54,13 +56,26 @@ const FormInput: FC<Props> = ({
   options,
   disabled,
 }) => {
+  const validate = (e: FormEvent<HTMLInputElement>): void => {
+    const target = e.target as HTMLInputElement
+    const value = target.value
+    let isValid = true
+    if (type === 'tel') {
+      const pattern: RegExp = /^\+?\d{0,10}$/
+      isValid = pattern.test(value)
+    }
+    if (isValid) {
+      onChange(name, value)
+    }
+  }
+
   let reactField: ReactElement = <></>
   switch (type) {
     case 'text':
     case 'email':
     case 'tel':
       reactField = (
-        <>
+        <div key={key}>
           <h4>{label}</h4>
           <input
             id={name}
@@ -69,29 +84,29 @@ const FormInput: FC<Props> = ({
             value={value}
             required={isRequired}
             disabled={disabled}
-            onChange={(e) => onChange(name, e.target.value)}
+            onChange={validate}
           />
-        </>
+        </div>
       )
       break
     case 'radio':
       reactField = (
-        <>
+        <div key={key}>
           <h4>{label}</h4>
-          {options?.map((option) => (
-            <div className={classes.optionContainer}>
+          {options?.map((option, index) => (
+            <div className={classes.optionContainer} key={index}>
               <input
                 id={option.label}
                 type='radio'
                 name={name}
                 value={option.value}
                 disabled={disabled}
-                onChange={(e) => onChange(name, e.target.value)}
+                onChange={validate}
               />
               <label htmlFor={option.label}>{option.label}</label>
             </div>
           ))}
-        </>
+        </div>
       )
       break
     default:
