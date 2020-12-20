@@ -1,21 +1,20 @@
-import React from 'react';
-import withStyles from 'react-jss';
+import React, { FC } from 'react'
+import withStyles, { WithStylesProps } from 'react-jss'
+import Header from './components/Header'
+import MultiStepForm from './components/MultiStepForm'
+import tenantForm from './tenantForm.json'
 
-const styles = {
-  title: {
-    color: 'tomato'
-  }
-};
+const styles = {}
 
-function App(props:{classes:{title:string}}) {
-  const {classes} = props
+interface Props extends WithStylesProps<typeof styles> {}
+
+const App: FC<Props> = ({ classes }) => {
   return (
-    <div className="App">
-      <header className={classes.title}>
-        <h1>Multi step form</h1>
-      </header>
+    <div className='App'>
+      <Header />
+      <MultiStepForm steps={tenantForm.steps} />
     </div>
-  );
+  )
 }
 
-export default withStyles(styles)(App);
+export default withStyles(styles)(App)
