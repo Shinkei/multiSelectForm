@@ -3,11 +3,13 @@ import withStyles, { WithStylesProps } from 'react-jss'
 
 const styles = {
   root: {
-    margin: '0px 12px',
     border: 'solid 1px #7AC455',
     borderRadius: 100,
     height: 18,
     textAlign: 'center',
+    '@media (max-width: 450px)': {
+      maxWidth: '100%',
+    },
   },
 }
 

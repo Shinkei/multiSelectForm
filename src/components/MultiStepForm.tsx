@@ -3,14 +3,20 @@ import withStyles, { WithStylesProps } from 'react-jss'
 import StepForm from './StepForm'
 import ProgressBar from './ProgressBar'
 import Step from '../types/Step'
+import FormConfirmation from './FormConfirmation'
 
 const styles = {
   root: {
     display: 'grid',
     gridTemplateColumns: '1fr',
-    gridTemplateRows: '5fr repeat(2, 1fr)',
+    gridTemplateRows: '5fr 30px',
     gridColumnGap: 12,
     gridRowGap: 12,
+    maxWidth: 500,
+    margin: 'auto',
+    '@media (max-width: 450px)': {
+      maxWidth: '100%',
+    },
   },
 }
 
@@ -21,6 +27,7 @@ interface Props extends WithStylesProps<typeof styles> {
 const MultiStepForm: FC<Props> = ({ classes, steps }) => {
   const [currentStep, setCurrentStep] = useState(1)
   const [form, setForm] = useState({})
+  const [showResult, setShowResult] = useState(false)
 
   const goNext = () => {
     setCurrentStep(currentStep + 1)
@@ -31,7 +38,13 @@ const MultiStepForm: FC<Props> = ({ classes, steps }) => {
   }
 
   const submit = () => {
-    console.log('submit')
+    setShowResult(true)
+  }
+
+  const reset = () => {
+    setCurrentStep(1)
+    setForm({})
+    setShowResult(false)
   }
 
   const updateField = (field: string, value: string) => {
@@ -43,16 +56,20 @@ const MultiStepForm: FC<Props> = ({ classes, steps }) => {
 
   return (
     <section className={classes.root}>
-      <StepForm
-        step={steps[currentStep - 1]}
-        form={form}
-        isFirst={currentStep === 1}
-        isLast={currentStep === steps.length}
-        onUpdateField={updateField}
-        onClickNext={goNext}
-        onClickBack={goBack}
-        onClickSubmit={submit}
-      />
+      {showResult ? (
+        <FormConfirmation form={form} reset={reset} />
+      ) : (
+        <StepForm
+          step={steps[currentStep - 1]}
+          form={form}
+          isFirst={currentStep === 1}
+          isLast={currentStep === steps.length}
+          onUpdateField={updateField}
+          onClickNext={goNext}
+          onClickBack={goBack}
+          onClickSubmit={submit}
+        />
+      )}
       <ProgressBar currentStep={currentStep} numberSteps={steps.length} />
     </section>
   )
