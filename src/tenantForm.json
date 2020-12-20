@@ -5,12 +5,14 @@
         {
           "field": "name",
           "label": "Name",
-          "type": "text"
+          "type": "text",
+          "required": true
         },
         {
           "field": "lastname",
           "label": "Last Name",
-          "type": "text"
+          "type": "text",
+          "required": true
         }
       ]
     },
@@ -19,7 +21,8 @@
         {
           "field": "email",
           "label": "E-mail",
-          "type": "email"
+          "type": "email",
+          "required": true
         }
       ]
     },
@@ -28,7 +31,8 @@
         {
           "field": "phone",
           "label": "Phone",
-          "type": "text"
+          "type": "tel",
+          "required": true
         }
       ]
     },
@@ -38,6 +42,7 @@
           "field": "salary",
           "label": "Salary Range",
           "type": "radio",
+          "required": true,
           "options": [
             { "label": "0 - 1.000", "value": "0 - 1.000" },
             { "label": "1.000 - 2.000", "value": "1.000 - 2.000" },

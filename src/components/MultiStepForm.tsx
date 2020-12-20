@@ -1,5 +1,4 @@
-import React, { FC, useState, ChangeEvent } from 'react'
-import classNames from 'classnames'
+import React, { FC, useState } from 'react'
 import withStyles, { WithStylesProps } from 'react-jss'
 import StepForm from './StepForm'
 import ProgressBar from './ProgressBar'
