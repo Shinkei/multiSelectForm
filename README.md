@@ -17,6 +17,10 @@
 
 To run the project please run the command `npm start`, it will create a server in the port 3000, so use the browser to go to `localhost:3000`
 
+## Deployment
+
+the app to test the component is deployed here: [https://miltistepform.netlify.app/](https://miltistepform.netlify.app/)
+
 ## Author
 
 Jorge Ramirez
