@@ -46,7 +46,7 @@ const StepForm: FC<Props> = ({
     let isDisabled: boolean = false
     fields.forEach((field) => {
       const value: string = form[field.field]
-      if (value === undefined) {
+      if (!value) {
         isDisabled = true
       }
       if (field.type === 'email') {
