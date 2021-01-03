@@ -9,6 +9,7 @@ const styles = {
     color: '#FFFFFF',
     padding: 14,
     minWidth: 100,
+    transition: 'all 300ms ease-out',
     cursor: 'pointer',
     '&:disabled': {
       opacity: 0.4,

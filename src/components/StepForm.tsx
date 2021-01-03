@@ -1,20 +1,39 @@
-import React, { FC } from 'react'
+import React, { FC, useState } from 'react'
 import withStyles, { WithStylesProps } from 'react-jss'
 import Step from '../types/Step'
 import ButtonsBar from './ButtonsBar'
 import FormInput from './FormInput'
+import classNames from 'classnames'
 
 const styles = {
   root: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    overflowX: 'hidden',
     '@media (max-width: 450px)': {
       maxWidth: '100%',
     },
   },
   fieldsContainer: {
     minHeight: 280,
+    position: 'relative',
+  },
+  rightAnimation: {
+    animationName: '$rightAnimation',
+    animationDuration: '1s',
+  },
+  '@keyframes rightAnimation': {
+    from: { right: -500 },
+    to: { right: 0 },
+  },
+  leftAnimation: {
+    animationName: '$leftAnimation',
+    animationDuration: '1s',
+  },
+  '@keyframes leftAnimation': {
+    from: { left: -500 },
+    to: { left: 0 },
   },
 }
 
@@ -41,6 +60,20 @@ const StepForm: FC<Props> = ({
   onUpdateField,
 }) => {
   const fields = step.fields
+  const [nextAnimation, setNextAnimation] = useState(false)
+  const [backAnimation, setBackAnimation] = useState(false)
+
+  const next = () => {
+    setNextAnimation(true)
+    setTimeout(() => setNextAnimation(false), 1000)
+    onClickNext()
+  }
+
+  const back = () => {
+    setBackAnimation(true)
+    setTimeout(() => setBackAnimation(false), 1000)
+    onClickBack()
+  }
 
   const isDisabled = (): boolean => {
     let isDisabled: boolean = false
@@ -60,7 +93,13 @@ const StepForm: FC<Props> = ({
 
   return (
     <div className={classes.root}>
-      <div className={classes.fieldsContainer}>
+      <div
+        className={classNames(
+          classes.fieldsContainer,
+          nextAnimation ? classes.rightAnimation : null,
+          backAnimation ? classes.leftAnimation : null
+        )}
+      >
         {fields.map((field) => (
           <FormInput
             key={field.field}
@@ -75,11 +114,11 @@ const StepForm: FC<Props> = ({
         ))}
       </div>
       <ButtonsBar
-        onClickBack={onClickBack}
+        onClickBack={back}
         isFirst={isFirst}
         isLast={isLast}
         onClickSubmit={onClickSubmit}
-        onClickNext={onClickNext}
+        onClickNext={next}
         isDisabledNext={isDisabled()}
         labelBack='Back'
         labelNext={isLast ? 'Confirm' : 'Next'}
